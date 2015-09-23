@@ -1,0 +1,23 @@
+extends base
+
+block link
+	-var selected = 'Sign in'
+
+block content
+	.row
+		.small-8.large-6.small-centered.columns
+			form(action='/users/login' method='post')
+				fieldset
+					legend Sign in
+					.row.collapse
+						.small-3.columns
+							span.prefix Username
+						.small-9.columns
+							input(type='text' name='username' placeholder='Username')
+					.row.collapse
+						.small-3.columns
+							span.prefix Password
+						.small-9.columns
+							input(type='password' name='password' placeholder='Password')
+					input.button.right.tiny.radius(type='submit' value='Sign in')
+

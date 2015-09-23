@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2014 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+      <link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<script type="text/javascript" src="js/plugins/LaunchMyApp.js"></script>
+        <script src="js/jquery.js"></script>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <title>Fundare</title>
+    </head>
+    <body>
+    
+
+    <div id="loginScreen" class="fndScreen">
+        <div class="logo"></div>
+        <div class="logoTxt">fundare</div>
+        <div class='loginContainer'>
+            <form class="fndLogin" id="loginForm" name="input" method="POST" action="doLogin();">
+                <input id="username" class="txtInput" type="text" name="username" method="post"/><br>
+                <input id="password" class="txtInput" type="password" name="password"/><br>
+                <input class="submit" name="Sign up" type="submit" id="submitLogin" value="Sign in"/>
+            </form>
+        </div>
+    </div>
+
+    <div id="lobbyScreen" class="fndScreen">
+        <div class="header"><div></div></div>
+        <div class="makeChall"><div>Create Challenge</div></div>
+
+        <div id="challenges">
+        </div>
+
+    </div>
+
+    <div id="createScreen" class="fndScreen">
+        <div class="header"><div></div></div>
+        <div id="createForm" class="fndCreate">
+            <form action="" method="">
+            <input type="text" class="txtInput" name="friend" value="Friend">
+            <input type="text" class="txtInput" name="game" value="Game">
+            <input type="text" class="txtInput" name="amount" value="£">
+            <input type="submit" class="submit" value="Challenge Friend">
+            </form>
+        </div>
+    </div>
+
+        <script>
+
+        $.support.cors = true; 
+        
+        $("#loginForm").submit(function (e) {
+            e.preventDefault();
+            $.post('http://localhost:3000/users/login', {
+                'username': $("#username").val(),
+                'password': $("#password").val()
+              }).done(success);
+        });
+
+        var success = function (data) {
+          if (data == 'gegegege') {
+            letsDoThisShit('lobby');
+          }
+        };
+
+        $('body').on('click', 'div.accept', function() {
+            var chid = $( this ).parent().parent().attr('id').substring(2);
+        });
+
+        $('.makeChall').click(function () {
+            letsDoThisShit('make');
+        });
+
+        // $(".accept").click(function () {
+        //     alert('clicked');
+        //     // alert($( this ).parent().parent().attr('id'));
+        // });
+
+        var makeChall = function (chall) {
+            var wager = (chall.wager) ? chall.wager.value : '120';
+            var game;
+            if (chall.id == 1) {
+                game = "2048";
+                chall.name = "Izz";
+            }
+            if (chall.id == 2) {
+                game = "Chess";
+                chall.name = "Mark";
+            }
+            if (chall.id == 3) {
+                game = "Tetris";
+                chall.name = "Victor";
+            }
+            if (chall.id == 4) {
+                game = "2048";
+                chall.name = "Greg";
+            }
+
+
+
+            return '<div class="challenge" id="ch' + chall.id + '">' +
+            '<div class="name">' + chall.name + '</div>'+
+            '<div class="body">Wager: £' + wager + '<br />Game: ' + game + '</div>'+
+            '<div class="options">'+
+            '    <div class="accept">Accept</div>'+
+            '    <div class="decline">Decline</div>'+
+            '</div>'+
+         '</div>';
+        };
+
+        var letsDoThisShit = function (p) {
+            $(".fndScreen").hide();
+            if (p == 'login') {
+                $("#loginScreen").show();
+            } else if (p == 'lobby') {
+                $.post('http://localhost:3000/getChallenges')
+                .done(function (data) {
+                    for (var i in data.challenges) {
+                        $("#challenges").append(makeChall(data.challenges[i]));
+                    }
+                    $("#lobbyScreen").show();
+                });
+            } else if (p == 'make') {
+                $("#createScreen").show();
+            }
+        };
+        letsDoThisShit('login');
+
+
+        // function doLogin(){
+        //     $.post("localhost:3000/users/login",
+        //     {
+        //         username: getElementById("loginForm").username,
+        //         password: getElementById("loginForm").password
+        //     });
+        </script>
+    </body>
+
+</html>

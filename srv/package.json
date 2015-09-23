@@ -1,0 +1,16 @@
+{
+  "name": "financeapp",
+  "description": "",
+  "version": "0.0.1",
+  "dependencies": {
+    "body-parser": "^1.8.1",
+    "express": "4.x",
+    "express-session": "^1.8.1",
+    "jade": "^1.6.0",
+    "lodash": "^2.4.1",
+    "mysql": "^2.5.0",
+    "passport": "^0.2.1",
+    "passport-local": "^1.0.0",
+    "sequelize": "^1.7.10"
+  }
+}
